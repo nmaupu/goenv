@@ -7,6 +7,8 @@
 # Displays the full path to the executable that goenv will invoke when
 # you run the given command.
 
+LS_BIN=$(which ls)
+
 set -e
 [ -n "$GOENV_DEBUG" ] && set -x
 
@@ -67,7 +69,7 @@ version_exists() {
     OLDIFS="$IFS"
     IFS=$'\n'
     local version_regex=$(echo ${input_version} | sed s/\\./\\\\./)
-    local versions=($(/bin/ls ${GOENV_ROOT}/versions | grep -E "^$version_regex(\\.[0-9]+)?$" | sort -V))
+    local versions=($(${LS_BIN} ${GOENV_ROOT}/versions | grep -E "^$version_regex(\\.[0-9]+)?$" | sort -V))
     IFS="$OLDIFS"
     if [[ ${#versions[@]} -eq 0 ]]; then
       return 1
